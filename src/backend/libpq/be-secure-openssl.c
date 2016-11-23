@@ -54,6 +54,8 @@
 #include <openssl/ssl.h>
 #include <openssl/dh.h>
 #include <openssl/conf.h>
+#include <openssl/opensslconf.h>
+#include <openssl/fips.h>
 #ifndef OPENSSL_NO_ECDH
 #include <openssl/ec.h>
 #endif
