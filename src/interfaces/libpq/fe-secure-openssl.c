@@ -55,6 +55,8 @@
 
 #include <openssl/ssl.h>
 #include <openssl/conf.h>
+#include <openssl/opensslconf.h>
+#include <openssl/fips.h>
 #ifdef USE_SSL_ENGINE
 #include <openssl/engine.h>
 #endif
@@ -816,6 +818,17 @@ pgtls_init(PGconn *conn)
 	{
 		if (pq_init_ssl_lib)
 		{
+
+#if defined(OPENSSL_FIPS)
+		int rc;
+		rc = FIPS_mode();
+		if(rc == 0)
+		{
+			rc = FIPS_mode_set(1);
+			assert(1 == rc);
+		}
+#endif			
+
 #ifdef HAVE_OPENSSL_INIT_SSL
 			OPENSSL_init_ssl(OPENSSL_INIT_LOAD_CONFIG, NULL);
 #else

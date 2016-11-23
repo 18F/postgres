@@ -54,6 +54,8 @@
 #include <openssl/ssl.h>
 #include <openssl/dh.h>
 #include <openssl/conf.h>
+#include <openssl/opensslconf.h>
+#include <openssl/fips.h>
 #ifndef OPENSSL_NO_ECDH
 #include <openssl/ec.h>
 #endif
@@ -164,6 +166,16 @@ be_tls_init(void)
 
 	STACK_OF(X509_NAME) *root_cert_list = NULL;
 
+#if defined(OPENSSL_FIPS)
+	int rc;
+    	rc = FIPS_mode();
+	if(rc == 0)
+    	{
+		rc = FIPS_mode_set(1);
+		assert(1 == rc);
+	}
+#endif
+	
 	if (!SSL_context)
 	{
 #ifdef HAVE_OPENSSL_INIT_SSL
