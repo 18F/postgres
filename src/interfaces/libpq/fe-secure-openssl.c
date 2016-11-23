@@ -55,6 +55,8 @@
 
 #include <openssl/ssl.h>
 #include <openssl/conf.h>
+#include <openssl/opensslconf.h>
+#include <openssl/fips.h>
 #ifdef USE_SSL_ENGINE
 #include <openssl/engine.h>
 #endif
